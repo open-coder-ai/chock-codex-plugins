@@ -23,11 +23,18 @@ Codex reads this repository as a git marketplace (the same mechanism as its Plug
 ```toml
 # ~/.codex/config.toml
 [marketplaces.chock-codex]
+source_type = "git"
 source = "https://github.com/open-coder-ai/chock-codex-plugins.git"
 ```
 
 Then install plugins from the `chock-codex` marketplace in the Plugins UI, and **approve
 each guard's hook trust review**.
+
+Using a different agent? Sibling repos built from the same catalog:
+[chock-claude-plugins](https://github.com/open-coder-ai/chock-claude-plugins) (Claude
+Code), [chock-copilot-plugins](https://github.com/open-coder-ai/chock-copilot-plugins)
+(Copilot CLI / VS Code),
+[chock-cursor-plugins](https://github.com/open-coder-ai/chock-cursor-plugins) (Cursor).
 
 ## Layout
 
