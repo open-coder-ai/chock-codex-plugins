@@ -11,6 +11,8 @@ plugin is advisory text only. That trust is bound to a hash of the hook command,
 plugin update silently voids it** — re-approve after updating. Any hook failure (missing
 `python3`, timeout) **fails OPEN**: Codex allows the command.
 
+<img src="docs/assets/hero.svg" alt="Animated replay: an agent runs helm uninstall and the chock guard denies it before it runs (Codex, permissionDecision deny)" width="720">
+
 **This repository is generated.** Every file is compiled from policy sources in
 [chock-catalog](https://github.com/open-coder-ai/chock-catalog) by
 [chock](https://github.com/open-coder-ai/chock). Pull requests here are closed with a
