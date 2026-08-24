@@ -14,7 +14,7 @@ on:
       framework_ref:
         description: Framework ref to build with
         type: string
-        default: main
+        default: v0.4.0
       dry_run:
         description: Build and show the diff without pushing
         type: boolean
