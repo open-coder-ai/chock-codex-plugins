@@ -1,0 +1,21 @@
+{
+  "lockfile_version": 1,
+  "plugins": {
+    "codex/agent-discipline": "d813f5532bddf1b7181f3b6c9babb7c45463927aca83bac9eb7289fce4804834",
+    "codex/block-destructive-commands": "619008babb269a087bf59fb8ba966bc45c6811327a5357b35c9673edf4c1122f",
+    "codex/block-invisible-unicode": "7d94c71f3ed89232d3ec30b195fb3864f46969e739f4e3cd1d15730f58f550d8",
+    "codex/block-no-verify": "fa3b0fc62c6feaf4078250838bec201230d4d9446748fff509e1bcb268e69ba3",
+    "codex/block-wildcard-agent-permissions": "88f4e12af78495d00894710d8d0c62932bb2c4f700f60ab2e53a44f68402fea0",
+    "codex/code-safety": "1586e7ecafbab17903c1234b9bb736314700518df0f763ee1c4637460fa53014",
+    "codex/context-hygiene": "99f697820046105aaeb403d82d55d39ab2585b63520ae4110c62d534ac482bdd",
+    "codex/git-safety": "8f9f41e87cc6479e26f07fe90fabac677f26f9d88e42c602ff20d1d1830a497d",
+    "codex/injection-defense": "63b7f0631407b03a8228c251cc51924822683a0eb80ade779bdd9da0e3541e8d",
+    "codex/memory-discipline": "47102263296c216f06bca02a61c8b5654fef4ede8dae9e753bea9b969dd5d944",
+    "codex/protect-agent-config": "d5d098510dd1806b5dc52946060f39e98b2c5195cd48263e07c0cb979806bf81",
+    "codex/protect-commit-privacy": "0486ff2977278a0dce9af8df315822a9e64f4cae25ac083df75d6f97fc38660b",
+    "codex/protect-main-branch": "b790de80602e3844c8493e789231f652ebd92fbbace81a901ff9662eb7e9ff5d",
+    "codex/scan-secrets": "37ceadf1724a90cc153d2374a853fa0e5570c2db5dff67133aab585c21e83631",
+    "codex/token-efficiency": "dfcbbd523fbf14cd726821aee3f0bdbf3de450e523351033229afa19d43b435c",
+    "codex/verify-dependency-exists": "5b7c6b17fc609ccd62ec09aea5b2b8917b9627c80b21d0da40ad9817d14b9836"
+  }
+}

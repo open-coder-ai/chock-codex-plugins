@@ -1,0 +1,94 @@
+name: Publish
+
+# Rebuilds this repository from the catalog and pushes the result. Runs HERE rather than
+# in the catalog so no long-lived cross-repo credential exists; publishing is a human
+# decision, never a side effect of a merge.
+
+on:
+  workflow_dispatch:
+    inputs:
+      catalog_ref:
+        description: Catalog ref to publish (tag, branch or SHA)
+        type: string
+        default: main
+      framework_ref:
+        description: Framework ref to build with
+        type: string
+        default: main
+      dry_run:
+        description: Build and show the diff without pushing
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this distribution repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          # The one checkout that keeps credentials: this job commits and pushes the
+          # regenerated tree. Documented as the artipacked exception in .github/zizmor.yml.
+          persist-credentials: true
+          path: dist
+
+      - name: Check out the catalog at the ref being published
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock-catalog
+          ref: ${{ inputs.catalog_ref }}
+          path: catalog
+
+      - name: Check out the framework
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock
+          ref: ${{ inputs.framework_ref }}
+          path: framework
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the framework
+        run: pip install ./framework
+
+      - name: Gate on the catalog's own checks
+        working-directory: catalog
+        run: |
+          chock check
+          chock check --only evals
+
+      - name: Clear the generated trees
+        run: rm -rf dist/claude dist/agent-plugins dist/copilot dist/cursor dist/codex
+
+      - name: Build the packages, index, lockfile and catalog page
+        run: |
+          chock plugin build --repo catalog --policies-dir base --format codex --out-dir dist
+          chock marketplace build --dist dist --tree codex
+
+      - name: Show what would change
+        working-directory: dist
+        run: git --no-pager diff --stat
+
+      - name: Publish
+        if: ${{ inputs.dry_run == false }}
+        working-directory: dist
+        env:
+          CATALOG_REF: ${{ inputs.catalog_ref }}
+          FRAMEWORK_REF: ${{ inputs.framework_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No change to publish."
+            exit 0
+          fi
+          git add -A
+          git commit -m "generated: catalog $CATALOG_REF (framework $FRAMEWORK_REF)"
+          git push

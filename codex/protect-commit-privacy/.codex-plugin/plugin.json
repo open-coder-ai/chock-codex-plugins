@@ -1,0 +1,18 @@
+{
+  "name": "protect-commit-privacy",
+  "version": "0.0.2",
+  "description": "Keep the development conversation out of git history. Agent-authored commits narrate by default -- who asked for what, which discussion decided it, what the plan was -- and on a public repo that narration is published forever. The guard refuses git commit commands whose message (inline -m/--message or the file behind -F/--file) contains process-leak markers; the rule tells the agent to describe the change, not the conversation, and to propose sensitive messages to the human before committing. Best-effort: markers are a narrow deny-list, and a message the human explicitly approves can say anything -- edit the marker list in the guard, the content is yours. [Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs python3 on PATH; any hook failure fails OPEN. Repo-wide enforcement at commit time and in CI still needs `chock sync`.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
