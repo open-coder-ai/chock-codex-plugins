@@ -1,6 +1,6 @@
 {
   "name": "block-destructive-commands",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Best-effort guard against destructive commands: rm -rf targeting absolute, home, or root-adjacent paths; git push --force (not --force-with-lease); git reset --hard; git clean -f; kubectl delete; terraform destroy. Known bypass classes include aliases, quoted arguments, non-standard clients, and scripts that invoke these commands indirectly. This is friction, not a security boundary. [Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs python3 on PATH; any hook failure fails OPEN. Repo-wide enforcement at commit time and in CI still needs `chock sync`.]",
   "author": {
     "name": "chock-core"

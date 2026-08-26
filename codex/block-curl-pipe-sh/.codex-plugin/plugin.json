@@ -1,0 +1,19 @@
+{
+  "name": "block-curl-pipe-sh",
+  "version": "0.0.1",
+  "description": "Best-effort guard against piping a network download straight into a shell or script interpreter: curl|wget|iwr ... | sh/bash/zsh/python/perl/ruby/node (bare or path-qualified, including subshell groups and sudo/exec/command/env wrappers), bash -c \"$(curl ...)\", bash <(curl ...), and the PowerShell iwr ... | iex form. Downloading to a file, or piping a fetch into a non-interpreter tool (jq, tar, grep), stays allowed. Known bypass classes include aliases, variable indirection, base64/obfuscated payloads, env-var-prefixed interpreters, and non-standard fetch clients. This is friction, not a security boundary. [Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs python3 on PATH; any hook failure fails OPEN. Repo-wide enforcement at commit time and in CI still needs `chock sync`.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "asi02"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

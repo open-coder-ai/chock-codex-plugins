@@ -1,6 +1,6 @@
 {
   "name": "block-no-verify",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Best-effort guard against bypassing git hooks via git commit/push --no-verify, commit's short -n form, or -c core.hooksPath overrides. On git push, -n means --dry-run and stays allowed. Known bypass classes include aliases, wrapper scripts, and non-standard clients. Fix the underlying hook failure instead of skipping validation. [Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs python3 on PATH; any hook failure fails OPEN. Repo-wide enforcement at commit time and in CI still needs `chock sync`.]",
   "author": {
     "name": "chock-core"
