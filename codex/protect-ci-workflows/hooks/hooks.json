@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${PLUGIN_ROOT}/scripts/pretooluse.py\" --guard \"${PLUGIN_ROOT}/scripts/protect-ci-workflows.sh\"",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --guard \"${PLUGIN_ROOT}/scripts/protect-ci-workflows.sh\"",
             "timeout": 30
           }
         ]

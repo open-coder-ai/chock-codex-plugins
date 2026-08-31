@@ -13,6 +13,6 @@
     "rule",
     "advise"
   ],
-  "skills": "./skills/",
+  "skills": "./skills",
   "hooks": "./hooks/hooks.json"
 }
