@@ -14,6 +14,6 @@
     "advise",
     "{'control': 'asi02', 'coverage': 'partial', 'note': 'blocks shell self-modification of ci workflow, action and dependency-automation files; server-side branch protection and required-status-checks remain the backstop an agent cannot self-approve'}"
   ],
-  "skills": "./skills/",
+  "skills": "./skills",
   "hooks": "./hooks/hooks.json"
 }

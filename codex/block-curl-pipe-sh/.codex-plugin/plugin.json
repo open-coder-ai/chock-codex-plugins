@@ -14,6 +14,6 @@
     "advise",
     "asi02"
   ],
-  "skills": "./skills/",
+  "skills": "./skills",
   "hooks": "./hooks/hooks.json"
 }

@@ -14,5 +14,5 @@
     "block",
     "{'control': 'asi04', 'coverage': 'partial', 'note': 'allowlist gate over newly-added dependencies in requirements.txt, pyproject.toml, package.json, go.mod at commit entry; it checks membership in a curated allowlist, not existence in the upstream registry'}"
   ],
-  "skills": "./skills/"
+  "skills": "./skills"
 }
