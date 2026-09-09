@@ -1,30 +1,37 @@
-# chock-codex-plugins
+<p align="center">
+  <img src="https://raw.githubusercontent.com/open-coder-ai/chock/main/docs/assets/logo.svg" alt="chock logo" width="110">
+</p>
+
+<h1 align="center">chock-codex-plugins</h1>
+
+<p align="center"><strong>Chock policies as Codex plugins — a real <code>PreToolUse</code> deny hook, held untrusted until you approve it.</strong></p>
+
+<p align="center">
 
 [![Generated-only](https://github.com/open-coder-ai/chock-codex-plugins/actions/workflows/generated-only.yml/badge.svg)](https://github.com/open-coder-ai/chock-codex-plugins/actions/workflows/generated-only.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Contribute upstream](https://img.shields.io/badge/contribute-chock--catalog-8957e5)](https://github.com/open-coder-ai/chock-catalog)
 
-Chock policies packaged as installable plugins for **OpenAI Codex**. Guard policies ship a
-real `PreToolUse` hook, so a matched destructive command is **denied before it runs** —
-witnessed blocking on a real Codex Desktop install (Windows, 2026-08-24).
+</p>
 
-**One thing Codex makes you do first, and honestly stated here because the plugin
-description says "session-enforced": Codex installs every hook UNTRUSTED.** Until you open
-the plugin's page and approve its hook ("needs review before it can run" → Trust), the
-plugin is advisory text only. That trust is bound to a hash of the hook command, so **a
-plugin update silently voids it** — re-approve after updating. Any hook failure (missing
-`python3`, timeout) **fails OPEN**: Codex allows the command.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/open-coder-ai/chock/main/docs/assets/demo.gif" alt="Chock's demo: an agent runs a destructive command and a guard plugin denies it before it executes" width="760">
+</p>
 
-<img src="docs/assets/hero.svg" alt="Animated replay: an agent runs helm uninstall and the chock guard denies it before it runs (Codex, permissionDecision deny)" width="720">
+An agent you're running can already touch your shell, your git history, and your CI config.
+You want it to move fast without being the reason a stray `helm uninstall` actually happens.
+Telling it to be careful in a prompt is not a guarantee; a plugin that can refuse the command
+is closer to one — a matched destructive command is denied before it runs, witnessed on a
+real Codex Desktop install (Windows, 2026-08-24).
 
-**This repository is generated.** Every file is compiled from policy sources in
-[chock-catalog](https://github.com/open-coder-ai/chock-catalog) by
-[chock](https://github.com/open-coder-ai/chock). Pull requests here are closed with a
-pointer to the catalog.
+**Codex makes you approve this first.** Codex installs every hook UNTRUSTED. Until you open a
+plugin's page and approve its hook ("needs review before it can run" → Trust), the plugin is
+advisory text only — the trust is bound to a hash of the hook command, so an update silently
+voids it. Any hook failure (missing `python3`, timeout) fails **open**: Codex allows it.
 
 ## Install
 
-Codex reads this repository as a git marketplace (the same mechanism as its Plugins UI):
+Codex reads this repository as a git marketplace, the same mechanism as its Plugins UI:
 
 ```toml
 # ~/.codex/config.toml
@@ -33,48 +40,34 @@ source_type = "git"
 source = "https://github.com/open-coder-ai/chock-codex-plugins.git"
 ```
 
-Then install plugins from the `chock-codex` marketplace in the Plugins UI, and **approve
-each guard's hook trust review**.
+Then install plugins from the `chock-codex` marketplace in the Plugins UI, and approve each
+guard's hook trust review.
 
-Using a different agent? Sibling repos built from the same catalog:
-[chock-claude-plugins](https://github.com/open-coder-ai/chock-claude-plugins) (Claude
-Code), [chock-copilot-plugins](https://github.com/open-coder-ai/chock-copilot-plugins)
-(Copilot CLI / VS Code),
-[chock-cursor-plugins](https://github.com/open-coder-ai/chock-cursor-plugins) (Cursor).
+## What you get
 
-## Layout
+See **[PLUGINS.md](PLUGINS.md)** for the full list: each policy, its version, and whether it
+enforces or advises in this client. A plugin governs one session; it doesn't run in CI or
+travel with a clone. For enforcement that follows the repository, with no trust toggle to
+forget, install Chock directly: `pip install chock && chock init && chock sync --ci`.
 
-```
-codex/<policy-id>/                 Codex plugin packages (.codex-plugin/plugin.json;
-                                   hooks/hooks.json where the policy has a guard)
-.claude-plugin/marketplace.json    the index Codex reads from git marketplaces
-```
+## Generated from chock-catalog
 
-See **[PLUGINS.md](PLUGINS.md)** for every policy, its version and its posture.
-
-**A plugin is not the same as adopting Chock.** Repo-wide enforcement — git hooks and a CI
-gate a session cannot skip, with no trust toggle to forget — comes from installing Chock in
-the repository:
-
-```bash
-pip install chock
-chock init && chock sync --ci
-```
-
-## Trust
+Every file here is compiled from policy sources in
+[chock-catalog](https://github.com/open-coder-ai/chock-catalog) by
+[chock](https://github.com/open-coder-ai/chock). Pull requests against this repository are
+closed automatically — open them against the catalog instead.
 
 - **Generated only:** CI regenerates from the pinned catalog and fails on any difference.
-- **Byte-identical guards:** guard scripts and the hook adapter are verbatim copies of
-  their framework sources.
-- **Best-effort, not a boundary:** guards are pattern-based filters. See
+- **Byte-identical guards:** guard scripts and the hook adapter are verbatim copies of their
+  framework sources.
+- **Best-effort, not a boundary:** guards are pattern-based filters; see
   [SECURITY.md](https://github.com/open-coder-ai/chock/blob/main/SECURITY.md).
 - **Tested upstream, and gated:** every policy ships an eval suite
   (`base/<policy>/evals/suite.yaml`) in the catalog, and the publish workflow runs
   `chock check` and `chock check --only evals` before packaging anything — a policy whose
   evals fail cannot reach this repository. The tests live in the catalog because the policy
   source does; this repository is compiled output.
-- **This README is the exception:** it is the one file the publisher never writes, so it
-  alone sits outside the generated-only guarantee. Everything else here regenerates.
+- This README is the exception: the one hand-written file here, outside the guarantee.
 
 ### Verify it yourself
 
@@ -99,13 +92,7 @@ checked without rebuilding the rest.
 **If you are listing these plugins in a marketplace,** pin both a tag and the full commit
 SHA. The tag names the release; the SHA is what holds the reviewed bytes still.
 
-
 ## Contributing
-
-Pull requests that change packages here are closed automatically, and not because the
-change is unwelcome: every package is compiled from the catalog, so an edit here would be
-overwritten at the next publish and would carry none of a policy's checks. What is welcome,
-and where it goes:
 
 | You want to | Go to |
 | :--- | :--- |
@@ -114,20 +101,17 @@ and where it goes:
 | Report a bug in how packages are generated | [chock](https://github.com/open-coder-ai/chock/issues/new/choose), where the emitter lives |
 | Fix this README | here — it is the one hand-written file in the repository |
 
-## Part of the open-coder-ai family
+## Part of open-coder-ai
 
-Everything under [open-coder-ai](https://github.com/open-coder-ai) is built on one rule: a claim must match a
-mechanism. Where this repository sits among the others:
-
-| Repository | What it is |
-| :--- | :--- |
-| [chock](https://github.com/open-coder-ai/chock) | The framework: write a policy once, enforce it on git hooks, CI, and every agent |
-| [chock-catalog](https://github.com/open-coder-ai/chock-catalog) | The policies, each graded by what it actually enforces |
-| [agentseam](https://github.com/open-coder-ai/agentseam) | The primitives layer under chock: one handler API over every agent's hooks, with a capability matrix that carries its provenance |
-| [context-report](https://github.com/open-coder-ai/context-report) | A signed report format for whether a plugin, hook, skill or `AGENTS.md` actually works |
-| [chock-threat-intel](https://github.com/open-coder-ai/chock-threat-intel) | A weekly, human-reviewed threat digest scored against the catalog |
-| [chock-claude-plugins](https://github.com/open-coder-ai/chock-claude-plugins) · [copilot](https://github.com/open-coder-ai/chock-copilot-plugins) · [cursor](https://github.com/open-coder-ai/chock-cursor-plugins) | The same catalog compiled for the other clients; generated only, like this one |
-| [chock-quickstart](https://github.com/open-coder-ai/chock-quickstart) · [chock-example](https://github.com/open-coder-ai/chock-example) | Template repositories: exactly what `chock init` leaves behind, and a working adoption with one policy per layer |
+| | |
+|---|---|
+| [agentseam](https://github.com/open-coder-ai/agentseam) | the primitives — one handler API and a verified capability matrix across 16 agents |
+| [chock](https://github.com/open-coder-ai/chock) | the compiler — one policy into git hooks, CI gates and native pre-tool hooks |
+| [chock-catalog](https://github.com/open-coder-ai/chock-catalog) | the policies — 39, each labelled enforced or advisory, with replayed evals |
+| [context-report](https://github.com/open-coder-ai/context-report) | the evidence — a signed report of whether an agent artifact actually works |
+| [chock-threat-intel](https://github.com/open-coder-ai/chock-threat-intel) | the threat ledger the catalog's policies answer to |
+| chock-{claude,cursor,copilot,codex}-plugins | the catalog, packaged for each agent's plugin format (generated) |
+| chock-quickstart · chock-example | template repos: what `chock init` leaves behind, and a full adoption |
 
 ## License
 
