@@ -13,5 +13,10 @@
     "rule",
     "advise"
   ],
+  "interface": {
+    "displayName": "chock-mise Rule",
+    "shortDescription": "trigger: personalize the coding agent to its owner -- adopt the owner's dialect, taste, habits and demeanor so it works like a trained twin of that developer.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

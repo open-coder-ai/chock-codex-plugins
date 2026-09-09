@@ -14,5 +14,10 @@
     "advise",
     "asi05"
   ],
+  "interface": {
+    "displayName": "Code Safety Rule",
+    "shortDescription": "trigger: secrets, eval/exec, unsanitized SQL, hallucinated dependencies.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

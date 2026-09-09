@@ -13,5 +13,10 @@
     "hook",
     "block"
   ],
+  "interface": {
+    "displayName": "Protect Main Branch",
+    "shortDescription": "Block direct commits and pushes to main or master.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

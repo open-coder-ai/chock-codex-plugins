@@ -13,5 +13,10 @@
     "rule",
     "advise"
   ],
+  "interface": {
+    "displayName": "Token Efficiency Rule",
+    "shortDescription": "trigger: large command output, broad searches, re-reading unchanged files, front-loading references.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

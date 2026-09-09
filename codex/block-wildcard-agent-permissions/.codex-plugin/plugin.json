@@ -14,5 +14,10 @@
     "block",
     "{'control': 'asi03', 'coverage': 'partial', 'note': 'blocks the everything-grant a diff can show (llm03 excessive agency); least-agency tool design remains advisory (owasp-asi02-tool-misuse, owasp-asi03-identity-privilege-abuse)'}"
   ],
+  "interface": {
+    "displayName": "Block Wildcard Agent Permissions",
+    "shortDescription": "The mechanizable slice of excessive agency, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- agent permission grants that allow everything.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

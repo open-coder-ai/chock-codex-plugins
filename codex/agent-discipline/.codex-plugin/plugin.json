@@ -13,5 +13,10 @@
     "rule",
     "advise"
   ],
+  "interface": {
+    "displayName": "Agent Discipline Rule",
+    "shortDescription": "trigger: edits without reading, unverified completion claims, weakened tests, dead code.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

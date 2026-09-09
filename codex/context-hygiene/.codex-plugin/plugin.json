@@ -13,5 +13,10 @@
     "rule",
     "advise"
   ],
+  "interface": {
+    "displayName": "Context Hygiene Rule",
+    "shortDescription": "trigger: context bloat, stale observations, resolved content inlined, noisy exploration.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

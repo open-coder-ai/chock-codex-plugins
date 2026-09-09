@@ -13,5 +13,10 @@
     "rule",
     "advise"
   ],
+  "interface": {
+    "displayName": "Memory Discipline Rule",
+    "shortDescription": "trigger: repeated mistakes, rediscovered patterns, preferences, non-derivable facts.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

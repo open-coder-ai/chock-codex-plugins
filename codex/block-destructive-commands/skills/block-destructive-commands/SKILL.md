@@ -16,4 +16,4 @@ block(destructive_command @position-aware): rm_-rf(/|~|$HOME|.)|Remove-Item_-Rec
 require_approval: reset_hard|rm_-rf|branch_-D; prefer: stash|soft_reset|force-with-lease|dry-run
 ```
 
-This policy is enforced in Codex by the PreToolUse hook shipped with this plugin, once its one-time trust review is approved (until then it is advisory, and a plugin update voids the trust until re-approved). Subject to the fail-open conditions in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock
+This policy is enforced in Codex by the PreToolUse hook shipped with this plugin, once its one-time trust review is approved (until then it is advisory, and a plugin update voids the trust until re-approved). Subject to the fail conditions in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

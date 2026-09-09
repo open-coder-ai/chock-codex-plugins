@@ -14,5 +14,10 @@
     "block",
     "{'control': 'asi04', 'coverage': 'partial', 'note': 'blocks the unpinned-action acquisition path a diff can show; signature/provenance verification and non-actions supply chain remain out of scope'}"
   ],
+  "interface": {
+    "displayName": "Pin GitHub Actions",
+    "shortDescription": "The mechanizable slice of CI supply-chain hardening, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- a workflow that references a third-party GitHub Action by a movable ref -- a branch or a version tag -- instead of a full 40-character commit SHA.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }

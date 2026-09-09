@@ -13,5 +13,10 @@
     "rule",
     "advise"
   ],
+  "interface": {
+    "displayName": "Git Safety Rule",
+    "shortDescription": "trigger: force push, hard reset, destructive branch delete, hook bypass, direct main commits.",
+    "composerIcon": "./assets/icon.svg"
+  },
   "skills": "./skills"
 }
