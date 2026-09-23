@@ -4,7 +4,7 @@
 
 <h1 align="center">chock-codex-plugins</h1>
 
-<p align="center"><strong>Chock policies as Codex plugins — a real <code>PreToolUse</code> deny hook, held untrusted until you approve it.</strong></p>
+<p align="center"><strong>Chock policies as Codex plugins — a real <code>PreToolUse</code> deny hook for guards, a <code>Stop</code> gate for writes, both held untrusted until you approve them.</strong></p>
 
 <p align="center">
 
@@ -22,12 +22,17 @@ An agent you're running can already touch your shell, your git history, and your
 You want it to move fast without being the reason a stray `helm uninstall` actually happens.
 Telling it to be careful in a prompt is not a guarantee; a plugin that can refuse the command
 is closer to one — a matched destructive command is denied before it runs, witnessed on a
-real Codex Desktop install (Windows, 2026-08-24).
+real Codex Desktop install (Windows, 2026-08-24). Gate policies work differently here: Codex
+records no file-writing tool vocabulary, so they cannot judge the write itself and are wired at
+`Stop` instead, re-reading what the turn left on disk.
 
 **Codex makes you approve this first.** Codex installs every hook UNTRUSTED. Until you open a
 plugin's page and approve its hook ("needs review before it can run" → Trust), the plugin is
 advisory text only — the trust is bound to a hash of the hook command, so an update silently
-voids it. Any hook failure (missing `python3`, timeout) fails **open**: Codex allows it.
+voids it. A hook that cannot run at all (missing `python3`, timeout) fails **open**: Codex allows it. A
+guard that runs and crashes is a **deny** here, because Codex rejects the confirmation prompt
+other clients show, and a gate that cannot reach a decision refuses rather than allowing
+something it never judged.
 
 ## Install
 
@@ -58,8 +63,8 @@ Every file here is compiled from policy sources in
 closed automatically — open them against the catalog instead.
 
 - **Generated only:** CI regenerates from the pinned catalog and fails on any difference.
-- **Byte-identical guards:** guard scripts and the hook adapter are verbatim copies of their
-  framework sources.
+- **Byte-identical guards:** each guard script is a verbatim copy of its policy's source in the
+  catalog, and the hook adapter a verbatim copy of its framework source.
 - **Best-effort, not a boundary:** guards are pattern-based filters; see
   [SECURITY.md](https://github.com/open-coder-ai/chock/blob/main/SECURITY.md).
 - **Tested upstream, and gated:** every policy ships an eval suite
@@ -67,7 +72,8 @@ closed automatically — open them against the catalog instead.
   `chock check` and `chock check --only evals` before packaging anything — a policy whose
   evals fail cannot reach this repository. The tests live in the catalog because the policy
   source does; this repository is compiled output.
-- This README is the exception: the one hand-written file here, outside the guarantee.
+- This README is hand-written, as are `SECURITY.md` and the workflows under `.github/`, so they
+  sit outside the generated-only guarantee.
 
 ### Verify it yourself
 
@@ -76,8 +82,9 @@ source and compares it with what is committed here:
 
 ```bash
 git clone https://github.com/open-coder-ai/chock-codex-plugins dist
-git clone --branch v0.7.0 https://github.com/open-coder-ai/chock framework
 git clone https://github.com/open-coder-ai/chock-catalog catalog
+git clone --branch "$(tr -d '[:space:]' < catalog/.framework-ref)" \
+  https://github.com/open-coder-ai/chock framework
 pip install ./framework
 chock plugin build --repo catalog --policies-dir base --format codex --out-dir dist
 chock marketplace build --dist dist --tree codex
@@ -85,7 +92,9 @@ git -C dist diff --exit-code && git -C dist status --porcelain
 ```
 
 Silence from both `git` commands means this repository is byte-identical to a fresh build
-from the catalog. `--branch v0.7.0` is the framework release this tree was published from.
+from the catalog. The framework ref comes from the catalog's own `.framework-ref`, which is
+what the publish and Generated-only workflows read, so this recipe cannot drift from the
+release a tree was actually built with.
 `chock-market.lock` records a sha256 per published plugin directory, so one package can be
 checked without rebuilding the rest.
 
@@ -99,7 +108,7 @@ SHA. The tag names the release; the SHA is what holds the reviewed bytes still.
 | Fix or add a policy | [chock-catalog](https://github.com/open-coder-ai/chock-catalog/blob/main/CONTRIBUTING.md) — it reaches every client from there, including this one |
 | Report that a guard did or did not block on your Codex version | an issue on [chock](https://github.com/open-coder-ai/chock/issues/new/choose), which records the witnessed-blocking claims these packages carry; "it fails open where you say it fails closed" is the most useful result you can send |
 | Report a bug in how packages are generated | [chock](https://github.com/open-coder-ai/chock/issues/new/choose), where the emitter lives |
-| Fix this README | here — it is the one hand-written file in the repository |
+| Fix this README | here — it is hand-written, not generated |
 
 ## Part of open-coder-ai
 
