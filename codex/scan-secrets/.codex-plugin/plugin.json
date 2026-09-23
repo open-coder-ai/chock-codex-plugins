@@ -1,7 +1,7 @@
 {
   "name": "scan-secrets",
-  "version": "0.0.6",
-  "description": "Blocks known credential patterns -- vendor key prefixes, private-key blocks, and key/token/password assignments -- at two enforcement points: at commit (the git hook, over staged changes) and at agent tool-use (the mcp-gateway / agent write guard, over a tool call's arguments), so a secret is caught as the agent writes it, before it ever reaches a commit. Matched by pattern, not by entropy analysis. Best-effort guard; not a replacement for a dedicated secret scanner. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "version": "0.0.7",
+  "description": "Blocks known credential patterns -- vendor key prefixes, private-key blocks, and key/token/password assignments -- at two enforcement points: at commit (the git hook, over staged changes) and at agent tool-use (the mcp-gateway / agent write guard, over a tool call's arguments), so a secret is caught as the agent writes it, before it ever reaches a commit. Matched by pattern, not by entropy analysis. Best-effort guard; not a replacement for a dedicated secret scanner. [Session-enforced at the turn's end by a Stop hook; needs python3. This client records no file-writing tool vocabulary, so the write itself is not judged: what the turn actually left on disk is re-read, and a construct a rule denies is refused then, however it was written. Without python3, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved.]",
   "author": {
     "name": "chock-core"
   },
@@ -18,5 +18,6 @@
     "shortDescription": "Blocks known credential patterns -- vendor key prefixes, private-key blocks, and key/token/password assignments -- at two enforcement points: at commit (the git hook, over staged changes) and at agent tool-use (the mcp-gateway / agent write guard, over a tool call's arguments), so a secret is caught as the agent writes it, before it ever reaches a commit.",
     "composerIcon": "./assets/icon.svg"
   },
-  "skills": "./skills"
+  "skills": "./skills",
+  "hooks": "./hooks/hooks.json"
 }

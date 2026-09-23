@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --gate \"${PLUGIN_ROOT}/scripts/gate.json\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
