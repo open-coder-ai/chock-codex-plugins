@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --guard \"${PLUGIN_ROOT}/scripts/block-destructive.sh\"",
+            "command": "git -c \"alias.chock-sh=!sh\" chock-sh \"${PLUGIN_ROOT}/scripts/launch.sh\" \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --guard \"${PLUGIN_ROOT}/scripts/block-destructive-commands.py\"",
             "timeout": 30
           }
         ]
