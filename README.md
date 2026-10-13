@@ -4,7 +4,8 @@
 
 <h1 align="center">chock-codex-plugins</h1>
 
-<p align="center"><strong>Chock policies as Codex plugins — a real <code>PreToolUse</code> deny hook for guards, a <code>Stop</code> gate for writes, both held untrusted until you approve them.</strong></p>
+<p align="center"><strong>A kill switch for your Codex agent's wrong moves.</strong></p>
+<p align="center">Chock policies as Codex plugins — a real <code>PreToolUse</code> deny hook for guards, a <code>Stop</code> gate for writes, both held untrusted until you approve them.</p>
 
 <p align="center">
 
