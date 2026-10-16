@@ -67,7 +67,15 @@ jobs:
           python-version: '3.12'
 
       - name: Install the framework from source
-        run: pip install ./framework
+        # Dependencies come hash-pinned from this repo's lock; the framework itself is the
+        # checkout above, built into a wheel with the locked build backend and installed with
+        # --no-deps, so pip resolves nothing unpinned. `pip check` fails closed if the
+        # framework ref declares a dependency the lock does not satisfy.
+        run: |
+          pip install --require-hashes -r dist/.github/requirements/framework.txt
+          pip wheel --no-deps --no-build-isolation --wheel-dir wheels ./framework
+          pip install --no-deps wheels/*.whl
+          pip check
 
       - name: Verify the lockfile and index match the published tree
         working-directory: dist
