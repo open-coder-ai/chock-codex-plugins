@@ -35,6 +35,12 @@ guard that runs and crashes is a **deny** here, because Codex rejects the confir
 other clients show, and a gate that cannot reach a decision refuses rather than allowing
 something it never judged.
 
+**How a deny reaches Codex.** Each guard plugin wires one `PreToolUse` hook, and the hook
+answers on stdout with a JSON decision, not an exit code:
+`{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "..."}}`
+with exit status 0. Gate plugins wire the same `PreToolUse` hook plus a `Stop` hook. The one
+exit-code answer is exit 2, used only when no working Python 3.11+ is found.
+
 ## Install
 
 Codex reads this repository as a git marketplace, the same mechanism as its Plugins UI:
