@@ -44,7 +44,7 @@ exit-code answer is exit 2, used only when no working Python 3.11+ is found.
 ## Two ways to get these plugins
 
 **This marketplace: no chock on the machine.** Each policy is its own plugin, republished with
-every chock release. You need Python 3.11+ and git, and nothing else. Codex reads this
+every chock release. You need Python 3.11+, git and a bash (Git for Windows includes one). Codex reads this
 repository as a git marketplace, the same mechanism as its Plugins UI:
 
 ```toml
@@ -65,7 +65,7 @@ builds a single plugin on your machine from
 
 ```bash
 pip install chock
-chock install --selection '<code>' --client codex --apply
+chock install --selection <code> --client codex --apply
 ```
 
 Codex runs a plugin's hooks only after you trust them in `/hooks`; approve the new plugin's
