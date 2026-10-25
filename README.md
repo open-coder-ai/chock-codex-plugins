@@ -41,26 +41,43 @@ answers on stdout with a JSON decision, not an exit code:
 with exit status 0. Gate plugins wire the same `PreToolUse` hook plus a `Stop` hook. The one
 exit-code answer is exit 2, used only when no working Python 3.11+ is found.
 
-## Moved to the chock.sh builder
+## Two ways to get these plugins
 
-These plugins now come from the **[chock.sh builder](https://chock.sh/coding/builder/)**: pick
-policies there and it writes one `chock install` command that builds a single plugin on your machine
-from [chock-catalog](https://github.com/open-coder-ai/chock-catalog). Nothing is downloaded from this
-repository any more.
+**This marketplace: no chock on the machine.** Each policy is its own plugin, republished with
+every chock release. You need Python 3.11+, git and a bash (Git for Windows includes one). Codex reads this
+repository as a git marketplace, the same mechanism as its Plugins UI:
 
-**Migrate from this marketplace.**
+```toml
+# ~/.codex/config.toml
+[marketplaces.chock-codex]
+source_type = "git"
+source = "https://github.com/open-coder-ai/chock-codex-plugins.git"
+```
 
-1. Remove each plugin you installed from the `chock-codex` marketplace in the Codex Plugins UI.
-2. Remove the marketplace: delete the `[marketplaces.chock-codex]` table from `~/.codex/config.toml`.
-3. `pip install chock`, then run the command the builder gives you:
-   `chock install --selection '<code>' --client codex --apply`
+Then install plugins from the `chock-codex` marketplace in the Plugins UI, and approve each
+guard's hook trust review.
 
-Codex runs a plugin's hooks only after you trust them in `/hooks`; approve the new plugin's hooks
-there, or it stays advisory text.
+**The builder: one plugin, needs chock.** Pick the policies you want at
+**[chock.sh](https://chock.sh/coding/builder/)**; it writes one `chock install` command that
+builds a single plugin on your machine from
+[chock-catalog](https://github.com/open-coder-ai/chock-catalog). That command needs
+`pip install chock`:
 
-**This repository stops publishing on the chock.sh launch day and is archived 30 days later.**
+```bash
+pip install chock
+chock install --selection <code> --client codex --apply
+```
 
-### One policy at a time
+Codex runs a plugin's hooks only after you trust them in `/hooks`; approve the new plugin's
+hooks there, or it stays advisory text.
+
+**Use one route for a given policy, never both.** Every copy of a plugin runs its own hook, so
+a policy installed from both places runs twice. To switch a policy from one route to the other,
+remove it from the first route before installing it from the second: remove each plugin you
+installed from the `chock-codex` marketplace in the Codex Plugins UI, and to drop the
+marketplace too, delete the `[marketplaces.chock-codex]` table from `~/.codex/config.toml`.
+
+### Builder links, one policy at a time
 
 Each link opens the builder with that one policy preselected for Codex, pinned to chock-catalog
 commit `e885f918a335e20dfddb4fad0331d4d5b4c5eb43` (the catalog's `main` on 2026-10-21). The pin is
