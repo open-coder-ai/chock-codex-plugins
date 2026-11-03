@@ -1,0 +1,23 @@
+{
+  "name": "compromised-package-ioc",
+  "version": "0.1.1",
+  "description": "Blocks adding a known-malicious package version (npm, PyPI, crates, Go, RubyGems, Packagist manifests and lockfiles), a re-pointed action ref, or an IOC file name, from a dated, sourced list (data/ioc.json, CI fails 120 days after as_of). Runs: commit, agent write, turn's end; only additions judged. Exact versions only: a range is not resolved. A snapshot, not a feed; friction, not a boundary. Adopt under rollout observe. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block"
+  ],
+  "interface": {
+    "displayName": "Block Known-Malicious Packages",
+    "shortDescription": "Blocks adding a known-malicious package version (npm, PyPI, crates, Go, RubyGems, Packagist manifests and lockfiles), a re-pointed action ref, or an IOC file name, from a dated, sourced list (data/ioc.json, CI fails 120 days after as_of).",
+    "composerIcon": "./assets/icon.svg"
+  },
+  "skills": "./skills",
+  "hooks": "./hooks/hooks.json"
+}

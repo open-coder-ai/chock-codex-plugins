@@ -1,7 +1,7 @@
 {
   "name": "verify-mcp-allowlist",
-  "version": "0.4.0",
-  "description": "Gate MCP server configuration as protected content. A shell write to .mcp.json is refused unless every mcpServers entry on the line, parsed as JSON, matches a name+source pair on the allowlist -- an unlisted name blocks, and an allowed name whose command/args/url changed blocks too. `claude mcp add|add-json` is checked the same way (add-from-claude-desktop cannot be verified and is refused). The allowlist ships inside this guard's own script, protected like every policy's implementations/ source -- edit only with 'chock: approved-config-change'. The shell guard reads Claude Code's .mcp.json, best-effort (PreToolUse fails open on a crash; a write with no visible content fails closed). A script gate at commit and tool use parses every written MCP config (.mcp.json, .cursor/mcp.json, .vscode/mcp.json, claude_desktop_config.json, .gemini/settings.json, .codex/config.toml) against the same allowlist; only servers the change adds or alters are refused, at commit and tool use. No pragma. [Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs git and a Python 3.11+ (python3, python or py) on PATH; with no working Python it exits 2 rather than allowing, and any other failure of the HOOK (missing git, a timeout, an unexpected exit) fails OPEN. A failure of the GUARD it runs is a DENY here, because Codex rejects the confirmation prompt the other clients get. Repo-wide enforcement at commit time and in CI still needs `chock sync`.]",
+  "version": "0.6.1",
+  "description": "Gates MCP servers against .chock/mcp-allowlist.json, empty by default (name, launcher with exact args, or url host). Shell guard refuses `<agent> mcp add` and shell writes of MCP configs or the allowlist unless listed. Script gate (commit, tool use, turn end) reads 13 client configs: a server off the list, or with other command, args or url host, refuses; unpinned or shell launchers, http, literal credentials, old versions only warn. Misses: aliases, scripts, gitignored files, other clients. [Shell guard: Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs git and a Python 3.11+ (python3, python or py) on PATH; with no working Python it exits 2 rather than allowing, and any other failure of the HOOK (missing git, a timeout, an unexpected exit) fails OPEN. A failure of the GUARD it runs is a DENY here, because Codex rejects the confirmation prompt the other clients get. Repo-wide enforcement at commit time and in CI still needs `chock sync`. Write gate: Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
   "author": {
     "name": "chock-core"
   },
@@ -12,11 +12,11 @@
     "policy-as-code",
     "rule",
     "advise",
-    "{'control': 'asi04', 'coverage': 'partial', 'note': \"blocks an unverified mcp server entering .mcp.json from the shell -- the mechanizable slice of asi04's 'unverified mcp servers' framing; provenance and signature verification beyond allowlist membership stay with the advisory owasp-asi04-agentic-supply-chain policy\"}"
+    "asi04"
   ],
   "interface": {
     "displayName": "Verify MCP Allowlist",
-    "shortDescription": "Gate MCP server configuration as protected content.",
+    "shortDescription": "Gates MCP servers against .chock/mcp-allowlist.json, empty by default (name, launcher with exact args, or url host).",
     "composerIcon": "./assets/icon.svg"
   },
   "skills": "./skills",
