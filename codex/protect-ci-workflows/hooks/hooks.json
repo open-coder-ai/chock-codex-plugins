@@ -6,8 +6,38 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git -c \"alias.chock-sh=!sh\" chock-sh \"${PLUGIN_ROOT}/scripts/launch.sh\" \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --guard \"${PLUGIN_ROOT}/scripts/protect-ci-workflows.py\"",
-            "timeout": 30
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${PLUGIN_ROOT}/scripts/launch.sh\" \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --guard \"${PLUGIN_ROOT}/scripts/protect-ci-workflows.py\"",
+            "timeout": 45
+          }
+        ]
+      },
+      {
+        "matcher": "apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${PLUGIN_ROOT}/scripts/launch.sh\" \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --gate \"${PLUGIN_ROOT}/scripts/gate.json\"",
+            "timeout": 45
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${PLUGIN_ROOT}/scripts/launch.sh\" \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --stop-check",
+            "timeout": 45
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${PLUGIN_ROOT}/scripts/launch.sh\" \"${PLUGIN_ROOT}/scripts/codex_cli.py\" --gate \"${PLUGIN_ROOT}/scripts/gate.json\" --stop",
+            "timeout": 45
           }
         ]
       }

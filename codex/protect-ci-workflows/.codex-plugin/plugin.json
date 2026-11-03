@@ -1,22 +1,22 @@
 {
   "name": "protect-ci-workflows",
-  "version": "0.1.0",
-  "description": "Guard against an agent weakening the automated checks that review its own work. CI/CD workflow files (.github/workflows/), the composite actions they call (.github/actions/) and the dependency-update automation (.github/dependabot.yml) define what must pass before a change lands -- so rewriting or deleting them is the agent removing the gate that would catch it. The guard refuses shell write-commands targeting those paths; reads pass, and tool-driven regeneration (chock sync) passes. Best-effort and deliberately coarse: the command line is parsed, and a write (a `>`/`>>` redirect, a writer verb like rm/mv/tee/sed -i, cp into the path, git checkout/restore, a PowerShell Set-Content/Add-Content/Out-File) must actually target the protected path; reading it passes. The 'chock: approved-config-change' marker is friction plus an audit trail, not authentication; the check an agent cannot self-approve is server-side branch protection. [Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs git and a Python 3.11+ (python3, python or py) on PATH; with no working Python it exits 2 rather than allowing, and any other failure of the HOOK (missing git, a timeout, an unexpected exit) fails OPEN. A failure of the GUARD it runs is a DENY here, because Codex rejects the confirmation prompt the other clients get. Repo-wide enforcement at commit time and in CI still needs `chock sync`.]",
+  "version": "0.2.7",
+  "description": "Asks a person before an agent weakens the checks that review its work. Shell guard refuses writes to .github/workflows/, .github/actions/, .github/dependabot.y*ml (redirect, rm/mv/tee/sed -i, cp into, git checkout/restore, cmdlets); reads and `chock sync` pass. Edit/Write: tool_use gate asks a person before a write to CI, hook or bot config (GitLab, Jenkins, CircleCI, CODEOWNERS, husky, more). Not judged: deletions, empty writes, shell writes to non-GitHub CI paths; plugin installs ship no gate. [Shell guard: Session-enforced in Codex by a PreToolUse hook: a matched command is denied before it runs (witnessed blocking on Codex Desktop, Windows, 2026-08-24; the deny is returned as hook JSON, not an exit code, which Codex's Windows shell wrapper mangles). Codex requires a one-time trust review per hook -- the plugin is ADVISORY until you approve its hook, and a plugin update voids that trust until re-approved. The hook needs git and a Python 3.11+ (python3, python or py) on PATH; with no working Python it exits 2 rather than allowing, and any other failure of the HOOK (missing git, a timeout, an unexpected exit) fails OPEN. A failure of the GUARD it runs is a DENY here, because Codex rejects the confirmation prompt the other clients get. Repo-wide enforcement at commit time and in CI still needs `chock sync`. Write gate: Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
   "author": {
     "name": "chock-core"
   },
-  "repository": "https://github.com/open-coder-ai/chock",
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
   "license": "Apache-2.0",
   "keywords": [
     "chock",
     "policy-as-code",
     "rule",
     "advise",
-    "{'control': 'asi02', 'coverage': 'partial', 'note': 'blocks shell self-modification of ci workflow, action and dependency-automation files; server-side branch protection and required-status-checks remain the backstop an agent cannot self-approve'}"
+    "asi02"
   ],
   "interface": {
     "displayName": "Protect CI Workflows",
-    "shortDescription": "Guard against an agent weakening the automated checks that review its own work.",
+    "shortDescription": "Asks a person before an agent weakens the checks that review its work.",
     "composerIcon": "./assets/icon.svg"
   },
   "skills": "./skills",
